@@ -1,0 +1,27 @@
+{
+    "Type": "JsonSerialization",
+    "Version": 1,
+    "ClassName": "PassAsset",
+    "ClassData": {
+        "PassTemplate": {
+            "Name": "SplitScreenCompositeTemplate",
+            "PassClass": "SplitScreenCompositePass",
+            "Slots": [
+                { "Name": "Player0", "ShaderInputName": "m_player0", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
+                { "Name": "Player1", "ShaderInputName": "m_player1", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
+                { "Name": "Player2", "ShaderInputName": "m_player2", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
+                { "Name": "Player3", "ShaderInputName": "m_player3", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
+                {
+                    "Name": "InputOutput",
+                    "SlotType": "InputOutput",
+                    "ScopeAttachmentUsage": "RenderTarget",
+                    "LoadStoreAction": { "LoadAction": "DontCare" }
+                }
+            ],
+            "PassData": {
+                "$type": "FullscreenTrianglePassData",
+                "ShaderAsset": { "FilePath": "Shaders/SplitScreen/Composite.shader" }
+            }
+        }
+    }
+}
