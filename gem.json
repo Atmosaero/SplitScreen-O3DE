@@ -12,21 +12,23 @@
         "Gem"
     ],
     "user_tags": [
-        "SplitScreen","Gameplay","Rendering"
+        "SplitScreen",
+        "Gameplay",
+        "Rendering"
     ],
     "platforms": [
-        "Windows","Linux"
+        "Windows",
+        "Linux"
     ],
     "icon_path": "",
     "requirements": "",
     "documentation_url": "",
     "dependencies": [
         "Atom_RPI",
-        "Atom"
+        "Atom",
+        "LyShine"
     ],
     "repo_uri": "https://github.com/Atmosaero/SplitScreen-O3DE",
-    "compatible_engines": [
-    ],
-    "engine_api_dependencies":[
-    ]
+    "compatible_engines": [],
+    "engine_api_dependencies": []
 }

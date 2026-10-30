@@ -1,68 +1,66 @@
 #include <Atom/Features/SrgSemantics.azsli>
 #include <Atom/Features/PostProcessing/FullscreenPixelInfo.azsli>
 #include <Atom/Features/PostProcessing/FullscreenVertex.azsli>
-
 ShaderResourceGroup PassSrg : SRG_PerPass
 {
     Texture2D<float4> m_player0;
     Texture2D<float4> m_player1;
     Texture2D<float4> m_player2;
     Texture2D<float4> m_player3;
+    Texture2D<float4> m_hud0;
+    Texture2D<float4> m_hud1;
+    Texture2D<float4> m_hud2;
+    Texture2D<float4> m_hud3;
     uint m_playerCount;
-
+    uint m_hudMask;
     Sampler LinearSampler
     {
-        MinFilter = Linear;
-        MagFilter = Linear;
-        MipFilter = Linear;
-        AddressU = Clamp;
-        AddressV = Clamp;
-        AddressW = Clamp;
+        MinFilter = Linear; MagFilter = Linear; MipFilter = Linear;
+        AddressU = Clamp; AddressV = Clamp; AddressW = Clamp;
     };
 }
-
 PSOutput MainPS(VSOutput input)
 {
     PSOutput output;
     float2 uv = input.m_texCoord;
-
+    uint player;
+    float2 localUv;
     if (PassSrg::m_playerCount == 2)
     {
-        if (uv.x < 0.5)
-        {
-            output.m_color = PassSrg::m_player0.Sample(PassSrg::LinearSampler, float2(uv.x * 2.0, uv.y));
-        }
-        else
-        {
-            output.m_color = PassSrg::m_player1.Sample(PassSrg::LinearSampler, float2((uv.x - 0.5) * 2.0, uv.y));
-        }
-        return output;
-    }
-
-    uint column = uv.x >= 0.5;
-    uint row = uv.y >= 0.5;
-    uint player = row * 2 + column;
-    float2 localUv = frac(uv * 2.0);
-
-    if (player == 0)
-    {
-        output.m_color = PassSrg::m_player0.Sample(PassSrg::LinearSampler, localUv);
-    }
-    else if (player == 1)
-    {
-        output.m_color = PassSrg::m_player1.Sample(PassSrg::LinearSampler, localUv);
-    }
-    else if (player == 2)
-    {
-        output.m_color = PassSrg::m_player2.Sample(PassSrg::LinearSampler, localUv);
-    }
-    else if (PassSrg::m_playerCount >= 4)
-    {
-        output.m_color = PassSrg::m_player3.Sample(PassSrg::LinearSampler, localUv);
+        player = uv.x >= 0.5;
+        localUv = float2(frac(uv.x * 2.0), uv.y);
     }
     else
     {
-        output.m_color = float4(0.0, 0.0, 0.0, 1.0);
+        player = uint(uv.y >= 0.5) * 2 + uint(uv.x >= 0.5);
+        localUv = frac(uv * 2.0);
     }
+    float4 world = float4(0,0,0,1);
+    float4 hud = float4(0,0,0,0);
+    if (player == 0)
+    {
+        world = PassSrg::m_player0.Sample(PassSrg::LinearSampler, localUv);
+        hud = PassSrg::m_hud0.Sample(PassSrg::LinearSampler, localUv);
+    }
+    else if (player == 1)
+    {
+        world = PassSrg::m_player1.Sample(PassSrg::LinearSampler, localUv);
+        hud = PassSrg::m_hud1.Sample(PassSrg::LinearSampler, localUv);
+    }
+    else if (player == 2 && PassSrg::m_playerCount >= 3)
+    {
+        world = PassSrg::m_player2.Sample(PassSrg::LinearSampler, localUv);
+        hud = PassSrg::m_hud2.Sample(PassSrg::LinearSampler, localUv);
+    }
+    else if (player == 3 && PassSrg::m_playerCount >= 4)
+    {
+        world = PassSrg::m_player3.Sample(PassSrg::LinearSampler, localUv);
+        hud = PassSrg::m_hud3.Sample(PassSrg::LinearSampler, localUv);
+    }
+    if ((PassSrg::m_hudMask & (1u << player)) == 0) hud = float4(0,0,0,0);
+    // LyShine RTT stores premultiplied alpha.
+    output.m_color = float4(hud.rgb + world.rgb * (1.0 - hud.a), 1.0);
+    // A thin divider lies inside each viewport so no pixels leak between players.
+    if (localUv.x < .002 || localUv.y < .003) output.m_color = float4(.01,.02,.03,1);
     return output;
 }

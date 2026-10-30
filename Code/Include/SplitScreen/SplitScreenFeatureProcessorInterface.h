@@ -21,9 +21,12 @@ namespace SplitScreen
     public:
         AZ_RTTI(SplitScreenFeatureProcessorInterface, "{E18A8DBC-F116-4CFC-BAED-EA40A75F47DD}", AZ::RPI::FeatureProcessor);
 
-        virtual void RegisterLocalPlayer(AZ::EntityId entityId, bool activated) = 0;
-        virtual void UnregisterLocalPlayer(AZ::EntityId entityId) = 0;
-        virtual void SetLocalPlayerActivated(AZ::EntityId entityId, bool activated) = 0;
+        virtual bool RegisterLocalPlayer(AZ::EntityId entityId, bool activated) = 0;
+        // Slot fixes controller/HUD ordering independently of entity creation order.
+        // Canvas ownership stays with the caller; detach before unloading it.
+        virtual bool SetLocalPlayerCanvas(AZ::EntityId camera, AZ::EntityId canvas, uint32_t slot) = 0;
+        virtual bool UnregisterLocalPlayer(AZ::EntityId entityId) = 0;
+        virtual bool SetLocalPlayerActivated(AZ::EntityId entityId, bool activated) = 0;
 
     };
 }

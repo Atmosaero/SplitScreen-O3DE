@@ -40,9 +40,10 @@ namespace SplitScreen
         void Deactivate() override;
         void Simulate(const FeatureProcessor::SimulatePacket& packet) override;
 
-        void RegisterLocalPlayer(AZ::EntityId entityId, bool activated) override;
-        void UnregisterLocalPlayer(AZ::EntityId entityId) override;
-        void SetLocalPlayerActivated(AZ::EntityId entityId, bool activated) override;
+        bool RegisterLocalPlayer(AZ::EntityId entityId, bool activated) override;
+        bool SetLocalPlayerCanvas(AZ::EntityId camera, AZ::EntityId canvas, uint32_t slot) override;
+        bool UnregisterLocalPlayer(AZ::EntityId entityId) override;
+        bool SetLocalPlayerActivated(AZ::EntityId entityId, bool activated) override;
 
     private:
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
@@ -51,6 +52,10 @@ namespace SplitScreen
         {
             AZ::EntityId m_entityId;
             bool m_activated = true;
+            AZ::EntityId m_canvas;
+            uint32_t m_slot = 4;
+            bool m_wasRtt = false;
+            AZ::Data::Asset<AZ::RPI::AttachmentImageAsset> m_previousImage;
         };
 
         struct ViewportRect
@@ -73,6 +78,8 @@ namespace SplitScreen
         AZ::RPI::Ptr<SplitScreenCompositePass> m_compositePass;
         AZStd::array<AZ::Data::Asset<AZ::RPI::AttachmentImageAsset>, 4> m_playerImageAssets;
         AZStd::array<AZ::Data::Instance<AZ::RPI::AttachmentImage>, 4> m_playerImages;
+        AZStd::array<AZ::Data::Asset<AZ::RPI::AttachmentImageAsset>, 4> m_hudImageAssets;
+        AZStd::array<AZ::Data::Instance<AZ::RPI::AttachmentImage>, 4> m_hudImages;
         AZ::Data::Asset<AZ::RPI::ResourcePoolAsset> m_renderTargetPoolAsset;
         AzFramework::WindowSize m_renderSize;
         bool m_rebuildPending = false;

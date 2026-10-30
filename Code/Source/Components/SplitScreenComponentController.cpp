@@ -86,10 +86,11 @@ namespace SplitScreen
 
         if (AZ::RPI::Scene* scene = AZ::RPI::Scene::GetSceneForEntityId(entityId))
         {
-            m_featureProcessor = scene->GetFeatureProcessor<SplitScreenFeatureProcessor>();
+            m_featureProcessor = scene->GetFeatureProcessor<SplitScreenFeatureProcessorInterface>();
             if (!m_featureProcessor)
             {
-                m_featureProcessor = scene->EnableFeatureProcessor<SplitScreenFeatureProcessor>();
+                m_featureProcessor = azrtti_cast<SplitScreenFeatureProcessorInterface*>(
+                    scene->EnableFeatureProcessor(AZ::Name("SplitScreenFeatureProcessor")));
             }
         }
         if (m_featureProcessor)

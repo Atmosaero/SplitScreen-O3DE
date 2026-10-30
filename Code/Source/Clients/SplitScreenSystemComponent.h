@@ -31,6 +31,11 @@ namespace SplitScreen
         SplitScreenSystemComponent();
         ~SplitScreenSystemComponent();
 
+        bool RegisterLocalPlayer(AZ::EntityId cameraId, bool activated) override;
+        bool SetLocalPlayerCanvas(AZ::EntityId cameraId, AZ::EntityId canvasId, AZ::u32 slot) override;
+        bool SetLocalPlayerActivated(AZ::EntityId cameraId, bool activated) override;
+        bool UnregisterLocalPlayer(AZ::EntityId cameraId) override;
+
     protected:
         ////////////////////////////////////////////////////////////////////////
         // SplitScreenRequestBus interface implementation

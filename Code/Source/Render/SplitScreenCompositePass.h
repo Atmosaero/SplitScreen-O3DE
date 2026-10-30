@@ -16,6 +16,7 @@ namespace SplitScreen
         AZ_CLASS_ALLOCATOR(SplitScreenCompositePass, AZ::SystemAllocator);
 
         static AZ::RPI::Ptr<SplitScreenCompositePass> Create(const AZ::RPI::PassDescriptor& descriptor);
+        void SetHudImages(const AZStd::array<AZ::Data::Instance<AZ::RPI::AttachmentImage>, 4>& images, uint32_t mask) { m_huds = images; m_hudMask = mask; }
         void SetPlayerImages(
             const AZStd::array<AZ::Data::Instance<AZ::RPI::AttachmentImage>, 4>& images,
             uint32_t playerCount);
@@ -26,6 +27,8 @@ namespace SplitScreen
         void FrameBeginInternal(FramePrepareParams params) override;
 
         AZStd::array<AZ::Data::Instance<AZ::RPI::AttachmentImage>, 4> m_images;
+        AZStd::array<AZ::Data::Instance<AZ::RPI::AttachmentImage>, 4> m_huds;
         uint32_t m_playerCount = 0;
+        uint32_t m_hudMask = 0;
     };
 }

@@ -7,20 +7,68 @@
             "Name": "SplitScreenCompositeTemplate",
             "PassClass": "SplitScreenCompositePass",
             "Slots": [
-                { "Name": "Player0", "ShaderInputName": "m_player0", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
-                { "Name": "Player1", "ShaderInputName": "m_player1", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
-                { "Name": "Player2", "ShaderInputName": "m_player2", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
-                { "Name": "Player3", "ShaderInputName": "m_player3", "SlotType": "Input", "ScopeAttachmentUsage": "Shader" },
+                {
+                    "Name": "Hud0",
+                    "ShaderInputName": "m_hud0",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Hud1",
+                    "ShaderInputName": "m_hud1",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Hud2",
+                    "ShaderInputName": "m_hud2",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Hud3",
+                    "ShaderInputName": "m_hud3",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Player0",
+                    "ShaderInputName": "m_player0",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Player1",
+                    "ShaderInputName": "m_player1",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Player2",
+                    "ShaderInputName": "m_player2",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
+                {
+                    "Name": "Player3",
+                    "ShaderInputName": "m_player3",
+                    "SlotType": "Input",
+                    "ScopeAttachmentUsage": "Shader"
+                },
                 {
                     "Name": "InputOutput",
                     "SlotType": "InputOutput",
                     "ScopeAttachmentUsage": "RenderTarget",
-                    "LoadStoreAction": { "LoadAction": "DontCare" }
+                    "LoadStoreAction": {
+                        "LoadAction": "DontCare"
+                    }
                 }
             ],
             "PassData": {
                 "$type": "FullscreenTrianglePassData",
-                "ShaderAsset": { "FilePath": "Shaders/SplitScreen/Composite.shader" }
+                "ShaderAsset": {
+                    "FilePath": "Shaders/SplitScreen/Composite.shader"
+                }
             }
         }
     }

@@ -40,6 +40,12 @@ namespace SplitScreen
                 }
             }
         }
+        for (uint32_t index = 0; index < 4; ++index)
+        {
+            if (m_playerCount == 0) break;
+            const uint32_t source = AZStd::min(index, m_playerCount - 1);
+            if (m_huds[source]) AttachImageToSlot(AZ::Name(AZStd::string::format("Hud%u", index)), m_huds[source]);
+        }
         FullscreenTrianglePass::BuildInternal();
     }
 
@@ -54,6 +60,8 @@ namespace SplitScreen
             {
                 m_shaderResourceGroup->SetConstant(countIndex, m_playerCount);
             }
+            const auto hudIndex = m_shaderResourceGroup->FindShaderInputConstantIndex(AZ::Name("m_hudMask"));
+            if (!hudIndex.IsNull()) m_shaderResourceGroup->SetConstant(hudIndex, m_hudMask);
         }
     }
 }
